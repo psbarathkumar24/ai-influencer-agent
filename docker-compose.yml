@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: aiinfluencer-db
+    environment:
+      POSTGRES_DB: aiinfluencer
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: aiinfluencer-app
+    environment:
+      DATABASE_URL: jdbc:postgresql://postgres:5432/aiinfluencer
+      DATABASE_USERNAME: postgres
+      DATABASE_PASSWORD: postgres
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      ELEVENLABS_API_KEY: ${ELEVENLABS_API_KEY}
+      ELEVENLABS_VOICE_ID: ${ELEVENLABS_VOICE_ID}
+      VIDEO_RENDERER_API_URL: ${VIDEO_RENDERER_API_URL}
+      VIDEO_RENDERER_WEBHOOK_SECRET: ${VIDEO_RENDERER_WEBHOOK_SECRET}
+      AWS_S3_BUCKET: ${AWS_S3_BUCKET}
+      AWS_REGION: ap-southeast-2
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      TWITTER_CLIENT_ID: ${TWITTER_CLIENT_ID}
+      TWITTER_CLIENT_SECRET: ${TWITTER_CLIENT_SECRET}
+      JWT_SECRET: ${JWT_SECRET}
+      CORS_ALLOWED_ORIGINS: http://localhost:3000
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+volumes:
+  postgres_data:
