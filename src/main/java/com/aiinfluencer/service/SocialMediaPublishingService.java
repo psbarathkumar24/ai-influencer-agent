@@ -74,14 +74,16 @@ public class SocialMediaPublishingService {
         try {
             log.info("Publishing to YouTube");
 
-            // YouTube Data API v3 implementation
-            var requestBody = objectMapper.createObjectNode()
-                    .set("snippet", objectMapper.createObjectNode()
-                            .put("title", project.getTitle())
-                            .put("description", project.getDescription())
-                            .put("categoryId", "22")) // People & Blogs
-                    .set("status", objectMapper.createObjectNode()
-                            .put("privacyStatus", "public"));
+           // YouTube Data API v3 implementation
+            ObjectNode requestBody = objectMapper.createObjectNode();
+            
+            requestBody.set("snippet", objectMapper.createObjectNode()
+                    .put("title", project.getTitle())
+                    .put("description", project.getDescription())
+                    .put("categoryId", "22")); // People & Blogs
+                    
+            requestBody.set("status", objectMapper.createObjectNode()
+                    .put("privacyStatus", "public"));
 
             // Multipart upload would go here
             // For now, simplified version
