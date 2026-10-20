@@ -38,7 +38,6 @@ export class AiInfluencerStack extends cdk.Stack {
 
     // S3 Bucket for video storage
     const videoBucket = new s3.Bucket(this, 'VideoBucket', {
-      bucketName: `ai-influencer-videos-${this.account}`,
       encryption: s3.BucketEncryption.S3_MANAGED,
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
       versioned: true,
