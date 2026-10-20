@@ -168,7 +168,7 @@ export class AiInfluencerStack extends cdk.Stack {
     // Container Definition
     const container = taskDefinition.addContainer('AppContainer', {
       //  NEW CORRECTED CONFIGURATION
-      image: ecs.ContainerImage.fromAsset(path.join(__dirname, '../../../')),
+      image: ecs.ContainerImage.fromRegistry('ai-influencer-backend:latest'),
       logging: ecs.LogDrivers.awsLogs({
         streamPrefix: 'app',
         logGroup: logGroup,
