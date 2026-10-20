@@ -4,6 +4,7 @@ phases:
   install:
     runtime-versions:
       java: corretto21
+      nodejs: 22
     commands:
       - npm install -g aws-cdk
   pre_build:
@@ -16,4 +17,4 @@ phases:
       - echo Compiling Java Code...
       - mvn clean compile
       - echo Deploying Infrastructure...
-      - cdk deploy --require-approval never
+      - cdk deploy --app "mvn exec:java -Dexec.mainClass=com.aiinfluencer.AiInfluencerAgentApplication" --require-approval never
