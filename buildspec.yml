@@ -3,17 +3,17 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      java: corretto17
+      java: corretto21
     commands:
       - npm install -g aws-cdk
   pre_build:
     commands:
-      - echo Starting Docker daemon for container bundling...
+      - echo Starting Docker daemon...
       - nohup /usr/local/bin/dockerd --host=unix:///var/run/docker.sock --host=tcp://127.0.0.1:2375 --storage-driver=overlay2 &
       - timeout 15 sh -c "until docker info; do echo waiting for docker; sleep 1; done"
   build:
     commands:
-      - echo Compiling Java Project via Maven...
+      - echo Compiling Java Code...
       - mvn clean compile
-      - echo Running Express CDK Deploy...
+      - echo Deploying Infrastructure...
       - cdk deploy --require-approval never
