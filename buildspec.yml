@@ -17,4 +17,5 @@ phases:
       - echo Compiling Java Code...
       - mvn clean compile
       - echo Deploying Infrastructure...
-      - cdk deploy --app "mvn exec:java -Dexec.mainClass=com.aiinfluencer.AiInfluencerAgentApplication" --require-approval never
+      # We inject flags to turn off Flyway and database initialization for the CDK runtime execution
+      - cdk deploy --app "mvn exec:java -Dexec.mainClass=com.aiinfluencer.AiInfluencerAgentApplication -Dspring.flyway.enabled=false -Dspring.autoconfigure.exclude=org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration,org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaConfiguration" --require-approval never
