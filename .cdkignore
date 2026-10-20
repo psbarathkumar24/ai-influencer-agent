@@ -1,0 +1,5 @@
+infrastructure/cdk/cdk.out
+infrastructure/cdk/.cdk.staging
+infrastructure/cdk/node_modules
+target
+.git
