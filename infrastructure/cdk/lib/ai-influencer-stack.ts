@@ -167,7 +167,7 @@ export class AiInfluencerStack extends cdk.Stack {
 
     // Container Definition
     const container = taskDefinition.addContainer('AppContainer', {
-      image: ecs.ContainerImage.fromAsset('../../'), // Build from Dockerfile
+      image: ecs.ContainerImage.fromAsset('../..'), // Build from Dockerfile
       logging: ecs.LogDrivers.awsLogs({
         streamPrefix: 'app',
         logGroup: logGroup,
